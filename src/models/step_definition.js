@@ -9,7 +9,6 @@ export default class StepDefinition {
     this.line = line
     this.options = options
     this.pattern = pattern
-    this.uri = uri
   }
 
   buildInvalidCodeLengthMessage(syncOrPromiseLength, callbackLength) {

@@ -20,7 +20,7 @@ Feature: Attachments
       import {Before} from 'cucumber'
 
       Before(function() {
-        this.attach(new Buffer([137, 80, 78, 71]), 'image/png')
+        this.attach(Buffer.from([137, 80, 78, 71]), 'image/png')
       })
       """
     When I run cucumber-js
@@ -37,8 +37,8 @@ Feature: Attachments
       Before(function(testCase, callback) {
         var passThroughStream = new stream.PassThrough()
         this.attach(passThroughStream, 'image/png', callback)
-        passThroughStream.write(new Buffer([137, 80]))
-        passThroughStream.write(new Buffer([78, 71]))
+        passThroughStream.write(Buffer.from([137, 80]))
+        passThroughStream.write(Buffer.from([78, 71]))
         passThroughStream.end()
       })
       """
@@ -56,8 +56,8 @@ Feature: Attachments
         Before(function() {
           var passThroughStream = new stream.PassThrough()
           var promise = this.attach(passThroughStream, 'image/png')
-          passThroughStream.write(new Buffer([137, 80]))
-          passThroughStream.write(new Buffer([78, 71]))
+          passThroughStream.write(Buffer.from([137, 80]))
+          passThroughStream.write(Buffer.from([78, 71]))
           passThroughStream.end()
           return promise
         })
@@ -108,3 +108,23 @@ Feature: Attachments
     Then the step "a step" has the attachment
       | DATA | MIME TYPE  |
       | text | text/plain |
+
+  @spawn
+  Scenario: Attaching after hook/step finishes
+    Given a file named "features/support/hooks.js" with:
+      """
+      import {After} from 'cucumber'
+      import Promise from 'bluebird'
+
+      After(function() {
+        // Do not return the promise so that the attach happens after the hook completes
+        Promise.delay(100).then(() => {
+          this.attach("text")
+        })
+      })
+      """
+    When I run cucumber-js
+    Then the error output contains the text:
+      """
+      Cannot attach after all steps/hooks have finished running. Ensure your step/hook waits for the attach to finish.
+      """

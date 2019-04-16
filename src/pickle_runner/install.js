@@ -35,7 +35,9 @@ export default async function install() {
         if (response.statusCode >= 400) {
           reject(
             new Error(
-              `Fetching ${remoteUrl} responded with status ${response.statusCode}`
+              `Fetching ${remoteUrl} responded with status ${
+                response.statusCode
+              }`
             )
           )
           return

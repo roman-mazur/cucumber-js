@@ -102,6 +102,7 @@ export class SupportCodeLibraryBuilder {
   }
 
   finalize() {
+    delete this.options.stepDefinitionConfigs
     wrapDefinitions({
       cwd: this.cwd,
       definitionFunctionWrapper: this.options.definitionFunctionWrapper,

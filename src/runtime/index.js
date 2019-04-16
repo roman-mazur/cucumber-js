@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { formatLocation } from '../formatter/helpers'
 import Promise from 'bluebird'
-import StackTraceFilter from './stack_trace_filter'
+import StackTraceFilter from '../stack_trace_filter'
 import UserCodeRunner from '../user_code_runner'
 import VError from 'verror'
 import childProcess from 'child_process'
@@ -143,6 +143,7 @@ export default class Runtime {
 
   async parseCommand(line, done) {
     const command = JSON.parse(line)
+    console.log(line)
     switch (command.type) {
       case commandTypes.RUN_BEFORE_TEST_RUN_HOOKS:
         await this.runTestRunHooks(

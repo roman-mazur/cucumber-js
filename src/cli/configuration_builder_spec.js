@@ -6,8 +6,6 @@ import fsExtra from 'fs-extra'
 import path from 'path'
 import tmp from 'tmp'
 
-const outputFile = promisify(fsExtra.outputFile)
-
 describe('Configuration', () => {
   beforeEach(async function() {
     this.tmpDir = await promisify(tmp.dir)({ unsafeCleanup: true })
@@ -40,18 +38,17 @@ describe('Configuration', () => {
         },
         filterStacktraces: true,
         formatOptions: {
-          colorsEnabled: true,
           cwd: this.tmpDir,
         },
         formats: [{ outputTo: '', type: 'progress' }],
         listI18nKeywordsFor: '',
         listI18nLanguages: false,
-        parallel: 0,
         profiles: [],
         runtimeConfig: {
           isDryRun: false,
           isFailFast: false,
           isStrict: true,
+          maxParallel: 0,
         },
         shouldExitImmediately: false,
         supportCodePaths: [],
@@ -65,9 +62,9 @@ describe('Configuration', () => {
     beforeEach(async function() {
       this.relativeFeaturePath = path.join('features', 'a.feature')
       this.featurePath = path.join(this.tmpDir, this.relativeFeaturePath)
-      await outputFile(this.featurePath, '')
+      await fsExtra.outputFile(this.featurePath, '')
       this.supportCodePath = path.join(this.tmpDir, 'features', 'a.js')
-      await outputFile(this.supportCodePath, '')
+      await fsExtra.outputFile(this.supportCodePath, '')
       this.argv.push(this.relativeFeaturePath)
       this.result = await ConfigurationBuilder.build(this.configurationOptions)
     })
@@ -86,15 +83,19 @@ describe('Configuration', () => {
     beforeEach(async function() {
       this.relativeFeaturePath = path.join('features', 'a.feature')
       this.featurePath = path.join(this.tmpDir, this.relativeFeaturePath)
-      await outputFile(this.featurePath, '')
+      await fsExtra.outputFile(this.featurePath, '')
       this.supportCodePath = path.join(this.tmpDir, 'features', 'a.js')
-      await outputFile(this.supportCodePath, '')
+      await fsExtra.outputFile(this.supportCodePath, '')
       this.argv.push(this.relativeFeaturePath + ':1:2')
       this.result = await ConfigurationBuilder.build(this.configurationOptions)
     })
 
     it('returns the appropriate feature and support code paths', async function() {
-      const { featuresConfig: { filters: { lines } } } = this.result
+      const {
+        featuresConfig: {
+          filters: { lines },
+        },
+      } = this.result
       expect(lines).to.eql({ [this.featurePath]: [1, 2] })
     })
   })
@@ -103,9 +104,9 @@ describe('Configuration', () => {
     beforeEach(async function() {
       this.relativeFeaturePath = path.join('features', 'nested', 'a.feature')
       this.featurePath = path.join(this.tmpDir, this.relativeFeaturePath)
-      await outputFile(this.featurePath, '')
+      await fsExtra.outputFile(this.featurePath, '')
       this.supportCodePath = path.join(this.tmpDir, 'features', 'a.js')
-      await outputFile(this.supportCodePath, '')
+      await fsExtra.outputFile(this.supportCodePath, '')
       this.argv.push(this.relativeFeaturePath)
       this.result = await ConfigurationBuilder.build(this.configurationOptions)
     })
@@ -162,7 +163,6 @@ describe('Configuration', () => {
     it('does not split absolute windows paths without an output', async function() {
       this.argv.push('-f', 'C:\\custom\\formatter')
       const formats = await getFormats(this.configurationOptions)
-
       expect(formats).to.eql([{ outputTo: '', type: 'C:\\custom\\formatter' }])
     })
 
@@ -170,5 +170,16 @@ describe('Configuration', () => {
       const result = await ConfigurationBuilder.build(options)
       return result.formats
     }
+  })
+
+  describe('formatOptions', () => {
+    it('returns the format options passed in with cwd added', async function() {
+      this.argv.push('--format-options', '{"snippetSyntax": "promise"}')
+      const result = await ConfigurationBuilder.build(this.configurationOptions)
+      expect(result.formatOptions).to.eql({
+        snippetSyntax: 'promise',
+        cwd: this.tmpDir,
+      })
+    })
   })
 })

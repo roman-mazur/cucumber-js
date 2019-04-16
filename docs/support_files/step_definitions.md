@@ -1,25 +1,50 @@
 # Step Definitions
 
-Step definitions are glue between features written in Gherkin and the actual system under test.
-Use `Given`, `When`, `Then`.
+Step definitions (`Given`, `When`, `Then`) are the glue between features written in Gherkin and the actual tests implemenation.
+
+Cucumber supports two types of expressions:
+
+- **Cucumber expressions**
+- **Regular expressions**
+
+## Cucumber expressions
+
+[Full docs.](https://docs.cucumber.io/cucumber/cucumber-expressions/)
+
+Gherkin:
+```gherkin
+Given I have 42 cucumbers in my belly
+```
+
+JS:
+```js
+import { Given } from 'cucumber';
+
+Given('I have {int} cucumbers in my belly', function (cucumberCount) {
+  assert.equal(this.responseStatus, cucumberCount)
+});
+```
+
+## Regular expressions
+
 Matching groups in the regular expression are passed as parameters to the step definition.
 
 ```javascript
-var {Then, When} = require('cucumber');
-var assert = require('assert');
-var fs = require('fs');
-var mzFs = require('mz/fs')
-var seleniumWebdriver = require('selenium-webdriver');
+const {Then, When} = require('cucumber');
+const assert = require('assert');
+const fs = require('fs');
+const mzFs = require('mz/fs')
+const seleniumWebdriver = require('selenium-webdriver');
 
 // Synchronous
-Then(/^Then the response status is (.*)$/, function (status) {
+Then(/^the response status is (.*)$/, function (status) {
   assert.equal(this.responseStatus, status)
 });
 
 // Asynchronous - callback
 //
 // Take a callback as an additional argument to execute when the step is done
-Then(/^Then the file named (.*) is empty$/, function (fileName, callback) {
+Then(/^the file named (.*) is empty$/, function (fileName, callback) {
   fs.readFile(fileName, 'utf8', function(error, contents) {
     if (error) {
       callback(error);
@@ -52,7 +77,7 @@ var {Then} = require('cucumber');
 var assert = require('assert');
 var mzFs = require('mz/fs');
 
-Then(/^Then the file named (.*) is empty$/, function *(fileName) {
+Then(/^the file named (.*) is empty$/, function *(fileName) {
   contents = yield mzFs.readFile(fileName, 'utf8');
   assert.equal(contents, '');
 });

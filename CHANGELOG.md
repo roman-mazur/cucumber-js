@@ -1,6 +1,47 @@
 Please see [CONTRIBUTING.md](https://github.com/cucumber/cucumber/blob/master/CONTRIBUTING.md) on how to contribute to Cucumber.
 
-### [Unreleased](https://github.com/cucumber/cucumber-js/compare/v4.2.1...master) (In Git)
+### [Unreleased](https://github.com/cucumber/cucumber-js/compare/v5.1.0...master) (In Git)
+
+### [5.1.0](https://github.com/cucumber/cucumber-js/compare/v5.0.3...5.1.0) (2018-12-28)
+
+#### Internals
+
+* Upgrade to babel 7
+
+### [5.0.3](https://github.com/cucumber/cucumber-js/compare/v5.0.2...5.0.3) (2018-12-03)
+
+#### Speed Improvements
+
+* Only create Cucumber Expressions once
+
+### [5.0.2](https://github.com/cucumber/cucumber-js/compare/v5.0.1...5.0.2) (2018-10-06)
+
+#### Bug Fixes
+
+* Update default of formatters' colors enabled to be true only if the stream is a TTY
+* Allow writing to stdout when running in parallel
+* Skip other before hooks if one returns skipped
+
+### [5.0.1](https://github.com/cucumber/cucumber-js/compare/v5.0.0...v5.0.1) (2018-04-09)
+
+#### Bug Fixes
+
+* Update dependencies to avoid licensing problems
+
+### [5.0.0](https://github.com/cucumber/cucumber-js/compare/v4.2.1...v5.0.0) (2018-04-09)
+
+#### BREAKING CHANGES
+
+* Drop support for Node.js 4
+
+#### Bug Fixes
+
+* Update dependencies to avoid licensing problems
+* Provide better error message when trying to attach data after the scenario has finished. This is possible if not waiting for the attach to finish.
+
+#### New features
+
+* Add support for Node.js 10
 
 ### [4.2.1](https://github.com/cucumber/cucumber-js/compare/v4.2.0...v4.2.1) (2018-04-09)
 
@@ -358,7 +399,7 @@ be used to get the name / tags of the running scenario. ([#947](https://github.c
 
 * Dropped support for Node 0.10
 * CLI
-  * `--colors / --no-colors` has moved to `--format-options '{"colorsEnabled": "<BOOLEAN>"}'`
+  * `--colors / --no-colors` has moved to `--format-options '{"colorsEnabled": <BOOLEAN>}'`
   * `--require <DIR|FILE>`: the required files are no longer reordered to require anything in a `support` directory first
   * `--snippet-interface <INTERFACE>` has moved to `--format-options '{"snippetInterface": "<INTERFACE>"}'`
   * `--snippet-syntax <SYNTAX>` has moved to `--format-options '{"snippetSyntax": "<SYNTAX>"}'`
