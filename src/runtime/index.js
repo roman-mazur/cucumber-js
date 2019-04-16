@@ -143,7 +143,6 @@ export default class Runtime {
 
   async parseCommand(line, done) {
     const command = JSON.parse(line)
-    console.log(line)
     switch (command.type) {
       case commandTypes.RUN_BEFORE_TEST_RUN_HOOKS:
         await this.runTestRunHooks(
