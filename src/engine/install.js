@@ -19,12 +19,12 @@ export default async function install() {
     }
   }
   if (exists) {
-    console.log(`cucumber-pickle-runner ${version} already installed`)
+    console.log(`cucumber-engine ${version} already installed`)
     return
   }
 
   console.log(
-    `Installing cucumber-pickle-runner ${version} from ${getBinaryRemoteUrl()}`
+    `Installing cucumber-engine ${version} from ${getBinaryRemoteUrl()}`
   )
   await new Promise((resolve, reject) => {
     const remoteUrl = getBinaryRemoteUrl()

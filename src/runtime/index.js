@@ -11,7 +11,7 @@ import AttachmentManager from './attachment_manager'
 import { buildStepArgumentIterator } from '../step_arguments'
 import DataTable from '../models/data_table'
 import StepRunner from './step_runner'
-import { getBinaryLocalPath as getPickleRunnerBinaryPath } from '../pickle_runner'
+import { getBinaryLocalPath as getEngineBinaryPath } from '../engine'
 
 export default class Runtime {
   // featuresConfig - {absolutePaths, defaultLanguage, orderSeed, filters}
@@ -233,7 +233,7 @@ export default class Runtime {
       if (this.filterStacktraces) {
         this.stackTraceFilter.filter()
       }
-      this.pickleRunner = childProcess.spawn(getPickleRunnerBinaryPath(), [], {
+      this.pickleRunner = childProcess.spawn(getEngineBinaryPath(), [], {
         stdio: ['pipe', 'pipe', process.stderr],
       })
       this.pickleRunner.on('exit', () => {

@@ -8,5 +8,5 @@ fs.access(libPath, function(err) {
   if (err) {
     return
   }
-  require('../lib/pickle_runner/install.js').default()
+  require('../lib/engine/install.js').default()
 })

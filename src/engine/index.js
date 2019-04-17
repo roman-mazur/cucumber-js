@@ -1,7 +1,7 @@
 import path from 'path'
 import os from 'os'
 
-export const version = 'v0.0.2'
+export const version = 'v0.0.6'
 
 function throwUnsupportedErrorMessage() {
   throw new Error(
@@ -58,15 +58,15 @@ function getGoBinaryArchitecture() {
 }
 
 export function getBinaryLocalPath() {
-  return path.join(os.homedir(), 'cucumber', 'pickle-runner', version)
+  return path.join(os.homedir(), 'cucumber', 'engine', version)
 }
 
 export function getBinaryRemoteUrl() {
   const urlPrefix =
-    'https://github.com/cucumber/cucumber-pickle-runner/releases/download'
+    'https://github.com/cucumber/cucumber-engine/releases/download'
   const os = getGoBinaryOperatingSystem()
   const arch = getGoBinaryArchitecture()
-  let binaryName = `cucumber-pickle-runner-${os}-${arch}`
+  let binaryName = `cucumber-engine-${os}-${arch}`
   if (os === 'windows') {
     binaryName += '.exe'
   }
