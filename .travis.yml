@@ -27,6 +27,8 @@ matrix:
     - node_js: "10"
       script: "yarn test-coverage"
       after_success: "nyc report --reporter=text-lcov | coveralls"
+    - node_js: "12"
+      script: "yarn test"
     - node_js: "8"
       script: "yarn test"
 
