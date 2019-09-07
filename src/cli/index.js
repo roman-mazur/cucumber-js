@@ -67,9 +67,14 @@ export default class Cli {
     }
   }
 
-  getSupportCodeLibrary({ supportCodeRequiredModules, supportCodePaths }) {
+  getSupportCodeLibrary({
+    supportCodeRequiredModules,
+    supportCodeRequiredSupportModules,
+    supportCodePaths,
+  }) {
     supportCodeRequiredModules.map(module => require(module))
     supportCodeLibraryBuilder.reset(this.cwd)
+    supportCodeRequiredSupportModules.map(module => require(module))
     supportCodePaths.forEach(codePath => require(codePath))
     return supportCodeLibraryBuilder.finalize()
   }

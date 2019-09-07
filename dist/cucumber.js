@@ -59812,7 +59812,7 @@ function () {
     key: "parse",
     value: function parse(argv) {
       var program = new _commander.Command(_path.default.basename(argv[1]));
-      program.usage('[options] [<GLOB|DIR|FILE[:LINE]>...]').version(_package.version, '-v, --version').option('-b, --backtrace', 'show full backtrace for errors').option('-d, --dry-run', 'invoke formatters without executing steps').option('--exit', 'force shutdown of the event loop when the test run has finished: cucumber will call process.exit').option('--fail-fast', 'abort the run on first failure').option('-f, --format <TYPE[:PATH]>', 'specify the output format, optionally supply PATH to redirect formatter output (repeatable)', ArgvParser.collect, []).option('--format-options <JSON>', 'provide options for formatters (repeatable)', ArgvParser.mergeJson('--format-options'), {}).option('--i18n-keywords <ISO 639-1>', 'list language keywords', ArgvParser.validateLanguage, '').option('--i18n-languages', 'list languages').option('--language <ISO 639-1>', 'provide the default language for feature files', '').option('--name <REGEXP>', 'only execute the scenarios with name matching the expression (repeatable)', ArgvParser.collect, []).option('--no-strict', 'succeed even if there are pending steps').option('--order <TYPE[:SEED]>', 'run scenarios in the specified order. Type should be `defined` or `random`', 'defined').option('-p, --profile <NAME>', 'specify the profile to use (repeatable)', ArgvParser.collect, []).option('--parallel <NUMBER_OF_SLAVES>', 'run in parallel with the given number of slaves', parseInt, 0).option('-r, --require <GLOB|DIR|FILE>', 'require files before executing features (repeatable)', ArgvParser.collect, []).option('--require-module <NODE_MODULE>', 'require node modules before requiring files (repeatable)', ArgvParser.collect, []).option('-t, --tags <EXPRESSION>', 'only execute the features or scenarios with tags matching the expression (repeatable)', ArgvParser.mergeTags, '').option('--world-parameters <JSON>', 'provide parameters that will be passed to the world constructor (repeatable)', ArgvParser.mergeJson('--world-parameters'), {});
+      program.usage('[options] [<GLOB|DIR|FILE[:LINE]>...]').version(_package.version, '-v, --version').option('-b, --backtrace', 'show full backtrace for errors').option('-d, --dry-run', 'invoke formatters without executing steps').option('--exit', 'force shutdown of the event loop when the test run has finished: cucumber will call process.exit').option('--fail-fast', 'abort the run on first failure').option('-f, --format <TYPE[:PATH]>', 'specify the output format, optionally supply PATH to redirect formatter output (repeatable)', ArgvParser.collect, []).option('--format-options <JSON>', 'provide options for formatters (repeatable)', ArgvParser.mergeJson('--format-options'), {}).option('--i18n-keywords <ISO 639-1>', 'list language keywords', ArgvParser.validateLanguage, '').option('--i18n-languages', 'list languages').option('--language <ISO 639-1>', 'provide the default language for feature files', '').option('--name <REGEXP>', 'only execute the scenarios with name matching the expression (repeatable)', ArgvParser.collect, []).option('--no-strict', 'succeed even if there are pending steps').option('--order <TYPE[:SEED]>', 'run scenarios in the specified order. Type should be `defined` or `random`', 'defined').option('-p, --profile <NAME>', 'specify the profile to use (repeatable)', ArgvParser.collect, []).option('--parallel <NUMBER_OF_SLAVES>', 'run in parallel with the given number of slaves', parseInt, 0).option('-r, --require <GLOB|DIR|FILE>', 'require files before executing features (repeatable)', ArgvParser.collect, []).option('--require-module <NODE_MODULE>', 'require node modules before requiring files (repeatable)', ArgvParser.collect, []).option('--require-support-module <NODE_MODULE>', 'require node modules with support files before requiring files (repeatable)', ArgvParser.collect, []).option('-t, --tags <EXPRESSION>', 'only execute the features or scenarios with tags matching the expression (repeatable)', ArgvParser.mergeTags, '').option('--world-parameters <JSON>', 'provide parameters that will be passed to the world constructor (repeatable)', ArgvParser.mergeJson('--world-parameters'), {});
       program.on('--help', function () {
         /* eslint-disable no-console */
         console.log('  For more details please visit https://github.com/cucumber/cucumber-js#cli\n');
@@ -60008,7 +60008,8 @@ function () {
                   },
                   shouldExitImmediately: !!this.options.exit,
                   supportCodePaths: supportCodePaths,
-                  supportCodeRequiredModules: this.options.requireModule
+                  supportCodeRequiredModules: this.options.requireModule,
+                  supportCodeRequiredSupportModules: this.options.requireSupportModule
                 });
 
               case 17:
@@ -60871,6 +60872,7 @@ function () {
     key: "getSupportCodeLibrary",
     value: function getSupportCodeLibrary(_ref5) {
       var supportCodeRequiredModules = _ref5.supportCodeRequiredModules,
+          supportCodeRequiredSupportModules = _ref5.supportCodeRequiredSupportModules,
           supportCodePaths = _ref5.supportCodePaths;
       supportCodeRequiredModules.map(function (module) {
         return require(module);
@@ -60878,6 +60880,9 @@ function () {
 
       _support_code_library_builder.default.reset(this.cwd);
 
+      supportCodeRequiredSupportModules.map(function (module) {
+        return require(module);
+      });
       supportCodePaths.forEach(function (codePath) {
         return require(codePath);
       });

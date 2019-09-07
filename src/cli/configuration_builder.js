@@ -64,6 +64,7 @@ export default class ConfigurationBuilder {
       shouldExitImmediately: !!this.options.exit,
       supportCodePaths,
       supportCodeRequiredModules: this.options.requireModule,
+      supportCodeRequiredSupportModules: this.options.requireSupportModule,
     }
   }
 
